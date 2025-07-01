@@ -11,6 +11,13 @@ export interface SleepSummary {
     totalLightSleepTime: number;
     totalREMSleepTime: number;
     totalSWSSleepTime: number;
+
+    awakeTimePercentage: number
+    noDataPercentage: number
+    lightSleepPercentage: number
+    REMSleepPercentage: number
+    SWSPercentage: number
+
     sleepCycleCount: number;
     disturbanceCount: number;
 }
@@ -30,9 +37,18 @@ export interface ISleep {
     createdAt: Date;
     updatedAt: Date;
     sleepId: number,
+    start: Date,
+    end: Date
     sleepScore: SleepScore,
     summary: SleepSummary
     sleepNeed: SleepNeed;
 }
 
-export interface IHeartRate { }
+export type DataRecord = { data: number, time: number }
+
+
+export interface IHeartRate {
+    start: 1750802400000
+    sleepId: number
+    values: DataRecord[]
+}

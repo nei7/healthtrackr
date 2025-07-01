@@ -25,6 +25,14 @@ const SleepSchema = new Schema<SleepModel>({
         required: true,
         unique: true
     },
+    start: {
+        type: Date,
+        required: true
+    },
+    end: {
+        type: Date,
+        required: true
+    },
     sleepScore: {
         performance: {
             type: Number,
@@ -73,6 +81,29 @@ const SleepSchema = new Schema<SleepModel>({
             required: true
         },
 
+
+        awakeTimePercentage: {
+            type: Number,
+            required: true
+        },
+
+        lightSleepPercentage: {
+            type: Number,
+            required: true
+        },
+        REMSleepPercentage: {
+            type: Number,
+            required: true
+        },
+        SWSPercentage: {
+            type: Number,
+            required: true
+        },
+        noDataPercentage: {
+            type: Number,
+            required: true
+        },
+
     },
     sleepNeed: {
         sleepTime: {
@@ -103,6 +134,6 @@ const SleepSchema = new Schema<SleepModel>({
 });
 
 
-SleepSchema.index({ created_at: -1, sleepId: 1 })
+SleepSchema.index({ created_at: -1, sleepId: 1, nap: 1 })
 
 export const Sleep = model<SleepModel>("sleep", SleepSchema);

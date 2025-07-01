@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { VisXYContainer, VisLine, VisAxis, VisArea, VisCrosshair, VisTooltip } from '@unovis/vue'
 import { format } from 'date-fns'
+import type { DataRecord } from '~~/shared/types/models';
 
 const cardRef = useTemplateRef<HTMLElement | null>('cardRef')
 const { width } = useElementSize(cardRef)
 
-type DataRecord = { data: number, time: number }
 
 defineProps<{
   data: DataRecord[]
@@ -18,17 +18,17 @@ const y = (d: DataRecord) => d.data
 const template = (d: DataRecord) => `${d.data} bpm`
 
 const xTicks = (i: number) => {
-  return format(i, 'hh:mm')
+  return format(i, 'HH:mm')
 }
 </script>
 
 <template>
   <UCard ref="cardRef" :ui="{ body: '!px-0 !pt-0 !pb-3' }">
-    <VisXYContainer :data="data" :padding="{ top: 40 }" class="h-96" :width="width">
+    <VisXYContainer :data="data" :padding="{ top: 40, left: 40, right: 40, bottom: 40 }" class="h-96" :width="width">
       <VisLine :x="x" :y="y" color="var(--ui-primary)" />
       <VisArea :x="x" :y="y" color="var(--ui-primary)" :opacity="0.1" />
 
-      <VisAxis type="x" :x="x" :tick-format="xTicks" />
+      <VisAxis type="x" :x="x" :tick-format="xTicks" :minMaxTicksOnly="true" />
 
       <VisCrosshair color="var(--ui-primary)" :template="template" />
 

@@ -23,6 +23,10 @@ const currentSleep = computed(() => {
     return data.value.filter((sleep) => !sleep.nap)[0]
   }
 })
+
+
+const { data: heartRate } = await useFetch<IHeartRate>(`/api/whoop/sleep/${currentSleep.value?.sleepId}/heartRate`)
+
 </script>
 
 <template>
@@ -45,51 +49,17 @@ const currentSleep = computed(() => {
       </UDashboardToolbar>
     </template>
 
-    <template #body>
-      <SleepStats v-if="currentSleep" :sleep="currentSleep" />
-
-      <!-- <SleepChart :data="heartRate" /> -->
+    <template #body v-if="currentSleep">
 
 
+      <SleepStats :sleep="currentSleep" />
+
+      <SleepChart v-if="heartRate" :data="heartRate?.values" />
+
+
+      <SleepSummary :summary="currentSleep.summary"></SleepSummary>
       <div>
-        <!-- <UPageGrid class="lg:grid-cols-2">
-          <UPageCard v-for="metric in sleepData" spotlight>
-            <div class="flex justify-between items-center ">
-              <div class="flex ">
-                <div class="flex items-center gap-2 font-normal text-muted">
-                  {{ metric.title }}
 
-                  <span :class="metric.color" class="font-bold">
-                    {{ metric.total }}
-                  </span>
-                </div>
-              </div>
-              <div class="font-normal text-muted">
-                {{ metric.duration }}
-              </div>
-
-            </div>
-            <div class="mt-2">
-              <component :is="metric.status"></component>
-            </div>
-          </UPageCard>
-
-          <UPageCard title="Sleep cycles" spotlight>
-            <div class="flex items-center gap-2">
-              <span class="text-2xl font-semibold text-highlighted">
-                {{ currentSleep?.score.stage_summary.sleep_cycle_count }}
-              </span>
-            </div>
-          </UPageCard>
-
-          <UPageCard title="Disturbances" spotlight>
-            <div class="flex items-center gap-2">
-              <span class="text-2xl font-semibold text-highlighted">
-                {{ currentSleep?.score.stage_summary.disturbance_count }}
-              </span>
-            </div>
-          </UPageCard>
-        </UPageGrid> -->
       </div>
     </template>
   </UDashboardPanel>

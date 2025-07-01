@@ -22,6 +22,8 @@ export default defineTask({
                     created_at,
                     updated_at,
                     id,
+                    start,
+                    end,
                     score: {
                         sleep_needed: {
                             need_from_recent_nap_milli,
@@ -57,6 +59,8 @@ export default defineTask({
                         filter: { sleepId: id },
                         update: {
                             $set: <ISleep>{
+                                start: new Date(start),
+                                end: new Date(end),
                                 nap,
                                 createdAt: applyTimezoneOffset(created_at, timezone_offset),
                                 updatedAt: applyTimezoneOffset(updated_at, timezone_offset),
@@ -79,12 +83,20 @@ export default defineTask({
                                 summary: {
                                     totalAwakeTime: total_awake_time_milli,
                                     totalInBedTime: total_in_bed_time_milli,
+
                                     totalLightSleepTime: total_light_sleep_time_milli,
                                     totalNoDataTime: total_no_data_time_milli,
                                     totalREMSleepTime: total_rem_sleep_time_milli,
                                     totalSWSSleepTime: total_slow_wave_sleep_time_milli,
+
                                     sleepCycleCount: sleep_cycle_count,
-                                    disturbanceCount: disturbance_count
+                                    disturbanceCount: disturbance_count,
+
+                                    awakeTimePercentage: (total_awake_time_milli / total_in_bed_time_milli) * 100,
+                                    noDataPercentage: (total_no_data_time_milli / total_in_bed_time_milli) * 100,
+                                    REMSleepPercentage: (total_rem_sleep_time_milli / total_in_bed_time_milli) * 100,
+                                    SWSPercentage: (total_slow_wave_sleep_time_milli / total_in_bed_time_milli) * 100,
+                                    lightSleepPercentage: (total_light_sleep_time_milli / total_in_bed_time_milli) * 100
                                 }
                             }
                         }

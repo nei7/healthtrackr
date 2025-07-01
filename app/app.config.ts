@@ -3,7 +3,7 @@ export default defineAppConfig({
     colors: {
       primary: 'blue',
       neutral: 'zinc'
-    }
+    },
   },
   uiPro: {
     pageCard: {
@@ -21,6 +21,7 @@ export default defineAppConfig({
         }
       }
     },
+
     dashboardPanel: {
       slots: {
         body: 'bg-gray-100'

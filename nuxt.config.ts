@@ -18,8 +18,8 @@ export default defineNuxtConfig({
     },
 
     scheduledTasks: {
-      '0 */6 * * *': ['fetchSleep']
-
+      '0 */6 * * *': ['fetchSleep'],
+      '0 12 * * *': ['fetchHeartRate']
     }
   },
 
