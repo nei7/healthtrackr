@@ -40,14 +40,31 @@ const links = [
 
 <template>
   <UDashboardGroup unit="rem">
-    <UDashboardSidebar v-model:open="open" collapsible resizable class="bg-inverted"
-      :ui="{ footer: 'lg:border-t lg:border-default' }">
+    <UDashboardSidebar
+      v-model:open="open"
+      collapsible
+      resizable
+      class="bg-inverted"
+      :ui="{ footer: 'lg:border-t lg:border-default' }"
+    >
       <template #default="{ collapsed }">
-        <UNavigationMenu :collapsed="collapsed" :items="links[0]" orientation="vertical" tooltip popover
-          :ui="{ link: 'text-gray-300', linkLeadingIcon: 'text-gray-300', }" />
+        <UNavigationMenu
+          :collapsed="collapsed"
+          :items="links[0]"
+          orientation="vertical"
+          tooltip
+          popover
+          :ui="{ link: 'text-gray-300', linkLeadingIcon: 'text-gray-300' }"
+        />
 
-        <UNavigationMenu color="neutral" :collapsed="collapsed" :items="links[1]" orientation="vertical" tooltip
-          class="mt-auto" />
+        <UNavigationMenu
+          color="neutral"
+          :collapsed="collapsed"
+          :items="links[1]"
+          orientation="vertical"
+          tooltip
+          class="mt-auto"
+        />
       </template>
     </UDashboardSidebar>
 

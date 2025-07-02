@@ -9,7 +9,6 @@ export default defineTask({
   },
   async run() {
     try {
-
       const record = await WhoopRecord.findOne({}).sort({ createdAt: -1 }).limit(1)
 
       if (!record) return { result: false }
@@ -30,7 +29,7 @@ export default defineTask({
         }
       })
 
-      await HeartRate.insertOne({ sleepId: sleep.sleepId, start: response.start, values: response.values })
+      await HeartRate.insertOne({ sleepId: sleep.id, start: response.start, values: response.values })
 
       return { result: true }
     } catch (err) {

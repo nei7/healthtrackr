@@ -7,7 +7,7 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
     'nuxt-mongoose',
     '@pinia/colada-nuxt',
-    '@pinia/nuxt',
+    '@pinia/nuxt'
 
   ],
 

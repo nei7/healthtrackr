@@ -1,4 +1,4 @@
-import type { TimeRange } from "~~/server/tasks/fetchWhoopData"
+import type { TimeRange } from '~~/server/tasks/fetchWhoopData'
 
 export interface SleepScore {
   performance: number
@@ -47,7 +47,7 @@ export interface Sleep {
 }
 
 export interface WhoopRecord {
-  cycleId: number,
+  cycleId: number
   sleepId: number
   recoveryId: number
   sleeps: Sleep[]

@@ -28,7 +28,7 @@ export default defineAppConfig({
               'transition-colors'
             ]
           }
-        },]
+        }]
     }
   },
   uiPro: {

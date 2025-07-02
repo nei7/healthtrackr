@@ -2,5 +2,5 @@
 import type { PiniaColadaOptions } from '@pinia/colada'
 
 export default {
-    // Options here
+  // Options here
 } satisfies PiniaColadaOptions

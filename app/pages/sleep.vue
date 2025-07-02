@@ -20,8 +20,6 @@ const { data: heartRate } = await useAsyncData<IHeartRate>(async () => {
 <template>
   <UDashboardPanel>
     <template #header>
-
-
       <UDashboardToolbar>
         <template #left>
           <!-- NOTE: The `-ms-1` class is used to align with the `DashboardSidebarCollapse` button here. -->

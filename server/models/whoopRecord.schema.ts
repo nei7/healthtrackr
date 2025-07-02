@@ -192,14 +192,13 @@ const WhoopRecordSchema = new Schema<WhoopRecordModel>({
     recoveryId: {
       type: Boolean,
       required: true
-    },
+    }
   },
   createdAt: {
     type: Date,
     required: true
-  },
+  }
 })
-
 
 WhoopRecordSchema.index({ sleepId: 1, recoveryId: 1, cycleId: 1, createdAt: -1 })
 

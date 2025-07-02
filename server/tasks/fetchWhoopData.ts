@@ -1,29 +1,29 @@
 import type { AnyBulkWriteOperation } from 'mongoose'
+import { sub } from 'date-fns'
 import { WhoopRecord } from '../models/whoopRecord.schema'
+import type { CycleRecord, RecoveryRecord, SleepRecord, WhoopRecordResponse } from '../types/whoop'
 import { applyTimezoneOffset, useWhoopApi } from '~~/server/utils'
 import type { Sleep, WhoopRecord as Record, Recovery, Cycle } from '~~/shared/types/models'
-import { sub } from 'date-fns'
-import type { CycleRecord, RecoveryRecord, SleepRecord, WhoopRecordResponse } from '../types/whoop'
 
 export interface TimeRange {
-  start: Date;
-  end: Date;
+  start: Date
+  end: Date
 }
 
 export function parseDuringRange(rangeStr: string): TimeRange {
-  const re = /'([^']+)'\s*,\s*'([^']+)'/;
-  const m = rangeStr.match(re);
+  const re = /'([^']+)'\s*,\s*'([^']+)'/
+  const m = rangeStr.match(re)
   if (!m) {
-    throw new Error(`Invalid range format: ${rangeStr}`);
+    throw new Error(`Invalid range format: ${rangeStr}`)
   }
 
-  const [, startStr, endStr] = m;
+  const [, startStr, endStr] = m
   if (!startStr || !endStr) throw new Error('failed to parse range')
 
   return {
     start: new Date(startStr),
-    end: new Date(endStr),
-  };
+    end: new Date(endStr)
+  }
 }
 
 function mapCycle(cycle: CycleRecord): Cycle {
@@ -34,7 +34,7 @@ function mapCycle(cycle: CycleRecord): Cycle {
     kilojoules: day_kilojoules,
     scaledStrain: scaled_strain,
     avgHeartRate: day_avg_heart_rate,
-    id,
+    id
   }
 }
 
@@ -110,7 +110,6 @@ export default defineTask({
 
       const now = new Date()
 
-
       const response = await api<WhoopRecordResponse>('/activities-service/v1/cycles/aggregate/range/19039830', {
         query: {
           apiVersion: 7,
@@ -123,11 +122,9 @@ export default defineTask({
         }
       })
 
-
-      const records = response.records.map((record) => {
+      const records = response.records.map<AnyBulkWriteOperation>((record) => {
         const sleeps = record.sleeps.map(mapSleep)
         const recovery = record.recovery ? mapRecovery(record.recovery) : undefined
-
 
         const cycle = mapCycle(record.cycle)
         return {
@@ -142,7 +139,7 @@ export default defineTask({
                 sleeps,
                 createdAt: applyTimezoneOffset(record.cycle.predicted_end, record.cycle.timezone_offset),
                 recovery,
-                cycle,
+                cycle
               }
             }
           }
