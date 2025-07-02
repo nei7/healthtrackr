@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { ISleep } from '~~/shared/types/models'
+import type { Sleep } from '~~/shared/types/models'
 
 defineProps<{
-  sleep: ISleep
+  sleep: Sleep
 }>()
 </script>
 

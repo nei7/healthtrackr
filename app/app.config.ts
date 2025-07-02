@@ -3,6 +3,32 @@ export default defineAppConfig({
     colors: {
       primary: 'blue',
       neutral: 'zinc'
+    },
+    navigationMenu: {
+      compoundVariants: [
+        {
+          variant: 'pill',
+          active: true,
+          highlight: false,
+          class: {
+            link: 'before:bg-neutral-800'
+          }
+        },
+        {
+          disabled: false,
+          active: false,
+          variant: 'pill',
+          class: {
+            link: [
+              'hover:text-gray-50 hover:before:bg-neutral-800',
+              'transition-colors before:transition-colors'
+            ],
+            linkLeadingIcon: [
+              'group-hover:text-gray-50',
+              'transition-colors'
+            ]
+          }
+        },]
     }
   },
   uiPro: {

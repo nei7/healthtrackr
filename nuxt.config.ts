@@ -5,7 +5,10 @@ export default defineNuxtConfig({
     '@nuxt/eslint',
     '@nuxt/ui-pro',
     '@vueuse/nuxt',
-    'nuxt-mongoose'
+    'nuxt-mongoose',
+    '@pinia/colada-nuxt',
+    '@pinia/nuxt',
+
   ],
 
   devtools: {
@@ -31,7 +34,7 @@ export default defineNuxtConfig({
     },
 
     scheduledTasks: {
-      '0 */6 * * *': ['fetchSleep'],
+      '0 */6 * * *': ['fetchWhoopData'],
       '0 12 * * *': ['fetchHeartRate']
     }
   },

@@ -1,4 +1,4 @@
-import { Sleep } from '../models/sleep.schema'
+import { WhoopRecord } from '../models/whoopRecord.schema'
 import { HeartRate } from '../models/heartRate.schema'
 import { useWhoopApi } from '~~/server/utils'
 
@@ -9,12 +9,15 @@ export default defineTask({
   },
   async run() {
     try {
-      Sleep.find({}).sort({ createdAt: -1 }).limit(25)
-      const sleep = await Sleep.findOne({ nap: false }).sort({ createdAt: -1 }).limit(1)
 
-      if (!sleep) return { result: false }
+      const record = await WhoopRecord.findOne({}).sort({ createdAt: -1 }).limit(1)
+
+      if (!record) return { result: false }
 
       const api = useWhoopApi()
+
+      const sleep = record.sleeps.filter(sleep => !sleep.nap).sort((a, b) => a.end.getTime() - b.end.getTime())[0]
+      if (!sleep) return { result: false }
 
       const response = await api<{ start: number, values: { data: number, time: number }[] }>('metrics-service/v1/metrics/user/19039830', {
         query: {

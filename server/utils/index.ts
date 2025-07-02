@@ -11,17 +11,28 @@ export const useWhoopApi = () =>
     }
   })
 
-export function applyTimezoneOffset(dateStr: string, offsetStr: string): Date {
-  const date = parseISO(dateStr)
 
-  if (offsetStr === 'Z') return date
+export function applyTimezoneOffset(
+  dateStr: string,
+  offsetStr: string
+): Date {
+  const date = parseISO(dateStr);
 
-  const match = offsetStr.match(/^([+-])(\d{2}):(\d{2})$/)
-  if (!match) throw new Error(`Invalid timezone offset: ${offsetStr}`)
+  if (offsetStr === 'Z') {
+    return date;
+  }
 
-  const [, sign, hours, minutes] = match
+  // Accepts "+0200", "-0530", "+02:00", etc.
+  const match = offsetStr.match(/^([+-])(\d{2}):?(\d{2})$/);
+  if (!match) {
+    throw new Error(`Invalid timezone offset: ${offsetStr}`);
+  }
 
-  const totalMinutes = parseInt(hours ?? '00') * 60 + parseInt(minutes ?? '00')
+  const [, sign, hours, minutes] = match;
+  const totalMinutes = parseInt(hours || '0', 10) * 60 + parseInt(minutes || '0', 10);
 
-  return sign === '+' ? subMinutes(date, totalMinutes) : addMinutes(date, totalMinutes)
+  // For "+", local time is ahead of UTC, so subtract to normalize to UTC
+  return sign === '+'
+    ? subMinutes(date, totalMinutes)
+    : addMinutes(date, totalMinutes);
 }

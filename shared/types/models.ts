@@ -1,3 +1,5 @@
+import type { TimeRange } from "~~/server/tasks/fetchWhoopData"
+
 export interface SleepScore {
   performance: number
   consistency: number
@@ -31,17 +33,47 @@ export interface SleepNeed {
   sleepTime: number
 }
 
-export interface ISleep {
+export interface Sleep {
   nap: boolean
   respiratoryRate: number
-  createdAt: Date
-  updatedAt: Date
-  sleepId: number
+  id: number
   start: Date
   end: Date
   sleepScore: SleepScore
   summary: SleepSummary
   sleepNeed: SleepNeed
+
+  optimalSleepTimes: TimeRange
+}
+
+export interface WhoopRecord {
+  cycleId: number,
+  sleepId: number
+  recoveryId: number
+  sleeps: Sleep[]
+  recovery: Recovery
+  cycle: Cycle
+  createdAt: Date
+}
+
+export interface Cycle {
+  avgHeartRate: number
+  kilojoules: number
+  scaledStrain: number
+  maxHeartRate: number
+  id: number
+}
+
+export interface Recovery {
+  hrBaseline: number
+  skinTempCelsius: number
+  spo2: number
+  restingHeartRate: number
+  hrv: number // hrv_rmssd
+  sleepId: number
+  isNormal: boolean
+  calibrating: boolean
+  id: number
 }
 
 export type DataRecord = { data: number, time: number }

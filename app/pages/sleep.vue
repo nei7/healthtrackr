@@ -1,44 +1,26 @@
 <script setup lang="ts">
-import { startOfDay, endOfDay } from 'date-fns'
+import { useDataStore } from '~/stores/data'
 
 const now = new Date()
 
 const range = shallowRef(now)
 
-const sleepQuery = computed(() => {
-  return {
-    start: startOfDay(range.value).toISOString(),
-    end: endOfDay(range.value).toISOString()
-  }
-})
+const { getRecord } = useDataStore()
 
-const { data } = await useFetch<ISleep[]>('/api/whoop/sleep', {
-  query: sleepQuery,
-  default: () => []
-})
+const record = computed(() => getRecord(range.value))
 
-const currentSleep = computed(() => {
-  if (data.value) {
-    return data.value.filter(sleep => !sleep.nap)[0]
-  }
-  return null
-})
+const sleep = computed(() => record.value?.sleeps.filter(sleep => !sleep.nap)[0])
 
 const { data: heartRate } = await useAsyncData<IHeartRate>(async () => {
-  if (!currentSleep.value) return { values: [], sleepId: 0, start: 0 }
-
-  return await $fetch<IHeartRate>(`/api/whoop/sleep/${currentSleep.value.sleepId}/heartRate`)
-}, { watch: [data] })
+  if (!sleep.value) return { values: [], sleepId: 0, start: 0 }
+  return await $fetch<IHeartRate>(`/api/whoop/sleep/${sleep.value.id}/heartRate`)
+}, { watch: [sleep] })
 </script>
 
 <template>
-  <UDashboardPanel id="sleep">
+  <UDashboardPanel>
     <template #header>
-      <UDashboardNavbar title="Sleep" :ui="{ right: 'gap-3' }">
-        <template #leading>
-          <UDashboardSidebarCollapse class="cursor-pointer" />
-        </template>
-      </UDashboardNavbar>
+
 
       <UDashboardToolbar>
         <template #left>
@@ -50,12 +32,12 @@ const { data: heartRate } = await useAsyncData<IHeartRate>(async () => {
       </UDashboardToolbar>
     </template>
 
-    <template v-if="currentSleep" #body>
-      <SleepStats :sleep="currentSleep" />
+    <template v-if="sleep" #body>
+      <SleepStats :sleep="sleep" />
 
       <SleepChart v-if="heartRate" :data="heartRate?.values" />
 
-      <SleepSummary :summary="currentSleep.summary" />
+      <SleepSummary :summary="sleep.summary" />
     </template>
   </UDashboardPanel>
 </template>
