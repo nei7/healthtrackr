@@ -1,27 +1,12 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
 
-
   modules: [
     '@nuxt/eslint',
     '@nuxt/ui-pro',
     '@vueuse/nuxt',
-    'nuxt-mongoose',
+    'nuxt-mongoose'
   ],
-  mongoose: {
-    uri: process.env.MONGODB_URI,
-    devtools: true,
-  },
-  nitro: {
-    experimental: {
-      tasks: true
-    },
-
-    scheduledTasks: {
-      '0 */6 * * *': ['fetchSleep'],
-      '0 12 * * *': ['fetchHeartRate']
-    }
-  },
 
   devtools: {
     enabled: true
@@ -40,6 +25,16 @@ export default defineNuxtConfig({
   },
 
   compatibilityDate: '2024-07-11',
+  nitro: {
+    experimental: {
+      tasks: true
+    },
+
+    scheduledTasks: {
+      '0 */6 * * *': ['fetchSleep'],
+      '0 12 * * *': ['fetchHeartRate']
+    }
+  },
 
   eslint: {
     config: {
@@ -49,5 +44,9 @@ export default defineNuxtConfig({
       }
     }
   },
+  mongoose: {
+    uri: process.env.MONGODB_URI,
+    devtools: true
+  }
 
 })

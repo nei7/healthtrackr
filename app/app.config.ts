@@ -3,7 +3,7 @@ export default defineAppConfig({
     colors: {
       primary: 'blue',
       neutral: 'zinc'
-    },
+    }
   },
   uiPro: {
     pageCard: {

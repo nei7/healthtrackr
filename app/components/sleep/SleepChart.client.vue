@@ -1,16 +1,11 @@
 <script setup lang="ts">
 import { VisXYContainer, VisLine, VisAxis, VisArea, VisCrosshair, VisTooltip } from '@unovis/vue'
 import { format } from 'date-fns'
-import type { DataRecord } from '~~/shared/types/models';
-
-const cardRef = useTemplateRef<HTMLElement | null>('cardRef')
-const { width } = useElementSize(cardRef)
-
+import type { DataRecord } from '~~/shared/types/models'
 
 defineProps<{
   data: DataRecord[]
 }>()
-
 
 const x = (d: DataRecord) => d.time
 const y = (d: DataRecord) => d.data
@@ -23,18 +18,38 @@ const xTicks = (i: number) => {
 </script>
 
 <template>
-  <UCard ref="cardRef" :ui="{ body: '!px-0 !pt-0 !pb-3' }">
-    <VisXYContainer :data="data" :padding="{ top: 40, left: 40, right: 40, bottom: 40 }" class="h-96" :width="width">
-      <VisLine :x="x" :y="y" color="var(--ui-primary)" />
-      <VisArea :x="x" :y="y" color="var(--ui-primary)" :opacity="0.1" />
+  <UPageCard :ui="{ body: '!px-0 !pt-0 !pb-3' }">
+    <template #header>
+      <div class="text-base text-pretty font-normal text-muted">
+        Sleep heart rate
+      </div>
+    </template>
 
-      <VisAxis type="x" :x="x" :tick-format="xTicks" :minMaxTicksOnly="true" />
+    <div class="px-4">
+      <VisXYContainer :data="data" :padding="{ top: 40 }" class="h-96">
+        <VisLine :x="x" :y="y" color="var(--ui-primary)" />
+        <VisArea
+          :x="x"
+          :y="y"
+          color="var(--ui-primary)"
+          :opacity="0.1"
+        />
 
-      <VisCrosshair color="var(--ui-primary)" :template="template" />
+        <VisAxis
+          type="x"
+          :x="x"
+          :tick-format="xTicks"
+          :min-max-ticks-only="true"
+          tick-text-color="var(--ui-text-muted)"
+          tick-text-font-size="16px"
+        />
 
-      <VisTooltip />
-    </VisXYContainer>
-  </UCard>
+        <VisCrosshair color="var(--ui-primary)" :template="template" />
+
+        <VisTooltip />
+      </VisXYContainer>
+    </div>
+  </UPageCard>
 </template>
 
 <style scoped>

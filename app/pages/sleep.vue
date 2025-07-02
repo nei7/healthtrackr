@@ -1,32 +1,34 @@
 <script setup lang="ts">
-import { startOfDay, sub, endOfDay } from 'date-fns'
-import type { Period, Range } from '~/types'
-
-const range = shallowRef<Range>({
-  start: sub(new Date(), { days: 14 }),
-  end: new Date()
-})
-const period = ref<Period>('daily')
+import { startOfDay, endOfDay } from 'date-fns'
 
 const now = new Date()
 
-const { data } = await useFetch<ISleep[]>('/api/whoop/sleep', {
-  query: {
-    start: startOfDay(now).toISOString(),
-    end: endOfDay(now).toISOString()
-  }, default: () => []
-})
+const range = shallowRef(now)
 
-
-const currentSleep = computed(() => {
-  if (data.value) {
-    return data.value.filter((sleep) => !sleep.nap)[0]
+const sleepQuery = computed(() => {
+  return {
+    start: startOfDay(range.value).toISOString(),
+    end: endOfDay(range.value).toISOString()
   }
 })
 
+const { data } = await useFetch<ISleep[]>('/api/whoop/sleep', {
+  query: sleepQuery,
+  default: () => []
+})
 
-const { data: heartRate } = await useFetch<IHeartRate>(`/api/whoop/sleep/${currentSleep.value?.sleepId}/heartRate`)
+const currentSleep = computed(() => {
+  if (data.value) {
+    return data.value.filter(sleep => !sleep.nap)[0]
+  }
+  return null
+})
 
+const { data: heartRate } = await useAsyncData<IHeartRate>(async () => {
+  if (!currentSleep.value) return { values: [], sleepId: 0, start: 0 }
+
+  return await $fetch<IHeartRate>(`/api/whoop/sleep/${currentSleep.value.sleepId}/heartRate`)
+}, { watch: [data] })
 </script>
 
 <template>
@@ -36,7 +38,6 @@ const { data: heartRate } = await useFetch<IHeartRate>(`/api/whoop/sleep/${curre
         <template #leading>
           <UDashboardSidebarCollapse class="cursor-pointer" />
         </template>
-
       </UDashboardNavbar>
 
       <UDashboardToolbar>
@@ -44,23 +45,17 @@ const { data: heartRate } = await useFetch<IHeartRate>(`/api/whoop/sleep/${curre
           <!-- NOTE: The `-ms-1` class is used to align with the `DashboardSidebarCollapse` button here. -->
           <SleepRangePicker v-model="range" class="-ms-1" />
 
-          <SleepPeriodSelect v-model="period" :range="range" />
+          <!-- <SleepPeriodSelect v-model="period" :range="range" /> -->
         </template>
       </UDashboardToolbar>
     </template>
 
-    <template #body v-if="currentSleep">
-
-
+    <template v-if="currentSleep" #body>
       <SleepStats :sleep="currentSleep" />
 
       <SleepChart v-if="heartRate" :data="heartRate?.values" />
 
-
-      <SleepSummary :summary="currentSleep.summary"></SleepSummary>
-      <div>
-
-      </div>
+      <SleepSummary :summary="currentSleep.summary" />
     </template>
   </UDashboardPanel>
 </template>
