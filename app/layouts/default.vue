@@ -39,7 +39,10 @@ const links = [
 </script>
 
 <template>
-  <UDashboardGroup unit="rem">
+  <UDashboardGroup
+    unit="rem"
+    class="bg-gray-100"
+  >
     <UDashboardSidebar
       v-model:open="open"
       collapsible

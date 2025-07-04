@@ -11,7 +11,7 @@ export default defineAppConfig({
           active: true,
           highlight: false,
           class: {
-            link: 'before:bg-neutral-800'
+            link: 'before:bg-neutral-700'
           }
         },
         {
@@ -20,7 +20,7 @@ export default defineAppConfig({
           variant: 'pill',
           class: {
             link: [
-              'hover:text-gray-50 hover:before:bg-neutral-800',
+              'hover:text-gray-50 hover:before:bg-neutral-700',
               'transition-colors before:transition-colors'
             ],
             linkLeadingIcon: [
@@ -32,6 +32,11 @@ export default defineAppConfig({
     }
   },
   uiPro: {
+    dashboardToolbar: {
+      slots: {
+        root: 'bg-default'
+      }
+    },
     pageCard: {
       slots: {
         root: 'relative rounded-xl',
@@ -50,7 +55,7 @@ export default defineAppConfig({
 
     dashboardPanel: {
       slots: {
-        body: 'bg-gray-100'
+        body: 'mx-auto w-full max-w-[120rem]'
       }
     }
   }

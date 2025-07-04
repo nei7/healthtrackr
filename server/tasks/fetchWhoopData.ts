@@ -41,7 +41,6 @@ function mapCycle(cycle: CycleRecord): Cycle {
 function mapSleep(sleep: SleepRecord): Sleep {
   const { score, debt_post, during, is_nap, optimal_sleep_times, activity_id, credit_from_naps, debt_pre, habitual_sleep_need, rem_sleep_duration, in_sleep_efficiency, need_from_strain, no_data_duration, disturbances, wake_duration, time_in_bed, respiratory_rate, cycles_count, sleep_consistency, slow_wave_sleep_duration, light_sleep_duration } = sleep
 
-  const range = parseDuringRange(optimal_sleep_times)
   const { start, end } = parseDuringRange(during)
 
   return {
@@ -50,7 +49,7 @@ function mapSleep(sleep: SleepRecord): Sleep {
     end,
     nap: is_nap,
     id: activity_id,
-    optimalSleepTimes: range,
+    optimalSleepTimes: optimal_sleep_times ? parseDuringRange(optimal_sleep_times) : null,
     summary: {
       totalAwakeTime: wake_duration,
       totalLightSleepTime: light_sleep_duration,
@@ -103,22 +102,21 @@ export default defineTask({
     name: 'fetchWhoopData',
     description: 'Get whoop data from api and insert into database'
   },
-  async run() {
+  async run({ payload }) {
+    const api = useWhoopApi()
+
+    const now = new Date()
+
     try {
-      console.info('running fetchSleep task')
-      const api = useWhoopApi()
-
-      const now = new Date()
-
       const response = await api<WhoopRecordResponse>('/activities-service/v1/cycles/aggregate/range/19039830', {
         query: {
           apiVersion: 7,
-          limit: 31,
+          limit: 50,
           endTime: now.toISOString(),
-          startTime: sub(now, { months: 1 }).toISOString()
+          startTime: sub(now, { days: payload.days as number || 2 }).toISOString()
         },
         onResponseError(data) {
-          console.error(data)
+          console.error(data.response._data)
         }
       })
 
@@ -133,11 +131,9 @@ export default defineTask({
             filter: { cycleId: cycle.id },
             update: {
               $set: <Record>{
-                sleepId: recovery?.sleepId,
                 cycleId: cycle.id,
-                recoveryId: recovery?.id,
                 sleeps,
-                createdAt: applyTimezoneOffset(record.cycle.predicted_end, record.cycle.timezone_offset),
+                createdAt: applyTimezoneOffset(record.cycle.created_at, record.cycle.timezone_offset),
                 recovery,
                 cycle
               }
@@ -151,7 +147,7 @@ export default defineTask({
       return { result: true }
     } catch (err) {
       console.error(err)
-      return { result: err }
+      return { result: false }
     }
   }
 })

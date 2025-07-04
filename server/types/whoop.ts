@@ -55,7 +55,7 @@ export interface SleepRecord {
   algo_version: string
   projected_score: number
   projected_sleep: number
-  optimal_sleep_times: string // time range as string
+  optimal_sleep_times: string | null// time range as string
   kilojoules: number | null
   user_id: number
   timezone_offset: string

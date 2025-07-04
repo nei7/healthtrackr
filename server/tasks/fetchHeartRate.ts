@@ -33,8 +33,7 @@ export default defineTask({
 
       return { result: true }
     } catch (err) {
-      console.error(err)
-      return { result: err }
+      return { result: false }
     }
   }
 })

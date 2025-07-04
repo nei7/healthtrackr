@@ -24,13 +24,12 @@ export const useDataStore = defineStore('data', () => {
     }
   }
 
-  callOnce(() => fetchData())
-
   const getRecord = (date: Date) =>
     records.value.find(record => isSameDay(date, new Date(record.createdAt))) || null
 
   return {
     records,
-    getRecord
+    getRecord,
+    fetchData
   }
 })

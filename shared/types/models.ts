@@ -42,8 +42,7 @@ export interface Sleep {
   sleepScore: SleepScore
   summary: SleepSummary
   sleepNeed: SleepNeed
-
-  optimalSleepTimes: TimeRange
+  optimalSleepTimes: TimeRange | null
 }
 
 export interface WhoopRecord {

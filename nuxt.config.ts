@@ -7,8 +7,8 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
     'nuxt-mongoose',
     '@pinia/colada-nuxt',
-    '@pinia/nuxt'
-
+    '@pinia/nuxt',
+    'nuxt-charts'
   ],
 
   devtools: {
@@ -36,15 +36,6 @@ export default defineNuxtConfig({
     scheduledTasks: {
       '0 */6 * * *': ['fetchWhoopData'],
       '0 12 * * *': ['fetchHeartRate']
-    }
-  },
-
-  eslint: {
-    config: {
-      stylistic: {
-        commaDangle: 'never',
-        braceStyle: '1tbs'
-      }
     }
   },
   mongoose: {
