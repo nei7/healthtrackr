@@ -1,21 +1,26 @@
 <script lang="ts" setup>
-// const { data } = await useFetch('/api/whoop/health', { default: () => ({ records: [] }) })
+const { weeklyRecords } = usehealthDataStore()
+
+const recoveries = computed(() => weeklyRecords.map(record => record.recovery))
+
+const sleeps = computed(() => weeklyRecords.map(record => record.sleeps).flat())
 </script>
 
 <template>
   <UDashboardPanel id="health">
     <template #header>
-      <UDashboardNavbar title="Health" :ui="{ right: 'gap-3' }">
-        <template #leading>
-          <UDashboardSidebarCollapse class="cursor-pointer" />
+      <UDashboardToolbar>
+        <template #left>
+          <div>Health</div>
         </template>
-      </UDashboardNavbar>
+      </UDashboardToolbar>
     </template>
 
     <template #body>
-      <!-- <UPageGrid v-if="currentCycle" class="xl:grid-cols-4">
-        <HealthStrainChart :value="currentCycle.score.strain" />
-      </UPageGrid> -->
+      <HealthStats
+        :recoveries="recoveries"
+        :sleeps="sleeps"
+      />
     </template>
   </UDashboardPanel>
 </template>

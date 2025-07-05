@@ -17,9 +17,9 @@ useHead({
   }
 })
 
-const { fetchData } = useDataStore()
+const { fetchWhoopRecords } = usehealthDataStore()
 
-await callOnce('healtData', () => fetchData())
+await callOnce('healtData', () => fetchWhoopRecords())
 </script>
 
 <template>

@@ -6,121 +6,121 @@ type WhoopRecordModel = Record & Document
 const SleepSchema = new Schema<Sleep & Document>({
   nap: {
     type: Boolean,
-    required: true,
+    required: true
   },
   id: {
     type: Number,
-    required: true,
+    required: true
   },
   respiratoryRate: {
     type: Number,
-    required: true,
+    required: true
   },
   start: {
     type: Date,
-    required: true,
+    required: true
   },
   end: {
     type: Date,
-    required: true,
+    required: true
   },
   sleepScore: {
     performance: {
       type: Number,
-      required: true,
+      required: true
     },
     consistency: {
       type: Number,
-      required: true,
+      required: true
     },
     efficiency: {
       type: Number,
-      required: true,
-    },
+      required: true
+    }
   },
   summary: {
     totalInBedTime: {
       type: Number,
-      required: true,
+      required: true
     },
     totalAwakeTime: {
       type: Number,
-      required: true,
+      required: true
     },
     totalNoDataTime: {
       type: Number,
-      required: true,
+      required: true
     },
     totalLightSleepTime: {
       type: Number,
-      required: true,
+      required: true
     },
     totalREMSleepTime: {
       type: Number,
-      required: true,
+      required: true
     },
     totalSWSSleepTime: {
       type: Number,
-      required: true,
+      required: true
     },
     sleepCycleCount: {
       type: Number,
-      required: true,
+      required: true
     },
     disturbanceCount: {
       type: Number,
-      required: true,
+      required: true
     },
 
     awakeTimePercentage: {
       type: Number,
-      required: true,
+      required: true
     },
 
     lightSleepPercentage: {
       type: Number,
-      required: true,
+      required: true
     },
     REMSleepPercentage: {
       type: Number,
-      required: true,
+      required: true
     },
     SWSPercentage: {
       type: Number,
-      required: true,
+      required: true
     },
     noDataPercentage: {
       type: Number,
-      required: true,
-    },
+      required: true
+    }
 
   },
   sleepNeed: {
     sleepTime: {
       type: Number,
-      required: true,
+      required: true
     },
     sleepDebt: {
       type: Number,
-      required: true,
+      required: true
     },
     baseline: {
       type: Number,
-      required: true,
+      required: true
     },
     needFromSleepDebt: {
       type: Number,
-      required: true,
+      required: true
     },
     needFromRecentStrain: {
       type: Number,
-      required: true,
+      required: true
     },
     needFromRecentNap: {
       type: Number,
-      required: true,
-    },
-  },
+      required: true
+    }
+  }
 })
 
 const WhoopRecordSchema = new Schema<WhoopRecordModel>({
@@ -128,68 +128,76 @@ const WhoopRecordSchema = new Schema<WhoopRecordModel>({
   cycleId: {
     type: Number,
     required: true,
-    unique: true,
+    unique: true
   },
   cycle: {
     avgHeartRate: {
       type: Number,
-      required: true,
+      required: true
     },
     kilojoules: {
       type: Number,
-      required: true,
+      required: true
     },
     scaledStrain: {
       type: Number,
-      required: true,
+      required: true
     },
     maxHeartRate: {
       type: Number,
-      required: true,
-    },
+      required: true
+    }
   },
   recovery: {
+    score: {
+      type: Number,
+      required: true
+    },
     hrBaseline: {
       type: Number,
-      required: true,
+      required: true
     },
     skinTempCelsius: {
       type: Number,
-      required: true,
+      required: true
     },
     spo2: {
       type: Number,
-      required: true,
+      required: true
     },
     restingHeartRate: {
       type: Number,
-      required: true,
+      required: true
+    },
+    date: {
+      type: Date,
+      required: true
     },
     hrv: {
       type: Number,
-      required: true,
+      required: true
     },
     sleepId: {
       type: Number,
-      required: true,
+      required: true
     },
     calibrating: {
       type: Boolean,
-      required: true,
+      required: true
     },
     isNormal: {
       type: Boolean,
-      required: true,
+      required: true
     },
     recoveryId: {
       type: Boolean,
-      required: true,
-    },
+      required: true
+    }
   },
   createdAt: {
     type: Date,
-    required: true,
-  },
+    required: true
+  }
 })
 
 WhoopRecordSchema.index({ cycleId: 1, createdAt: -1 })

@@ -37,13 +37,13 @@ defineProps<{
     >
       <span
         v-if="sleep.sleepNeed.sleepDebt <= 0"
-        class="text-green-600 text-sm"
+        class="text-success text-sm"
       >
         Optimal
       </span>
       <span
         v-else-if="sleep.sleepNeed.sleepDebt > 0"
-        class="text-yellow-600 text-sm"
+        class="text-warning text-sm"
       >
         Insufficient
       </span>

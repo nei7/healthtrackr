@@ -10,20 +10,21 @@ const categories = computed<Record<string, BulletLegendItemInterface>>(() => ({
     name: 'data',
     color: '#3b82f6'
   }
-
 }))
 
 const xFormatter = (i: number): string => format(data.value[i]!.time, 'HH:mm')
 </script>
 
 <template>
-  <UPageCard>
+  <UPageCard title="Last night sleep">
     <AreaChart
       :data="data"
       :height="300"
+      min-max-ticks-only
       :categories="categories"
-      :y-grid-line="true"
+      :y-grid-line="false"
       :x-grid-line="true"
+      :x-num-ticks="1"
       :x-formatter="xFormatter"
       :hide-legend="true"
     />

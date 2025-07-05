@@ -32,7 +32,7 @@ export default defineTask({
       await HeartRate.insertOne({ sleepId: sleep.id, start: response.start, values: response.values })
 
       return { result: true }
-    } catch (err) {
+    } catch {
       return { result: false }
     }
   }

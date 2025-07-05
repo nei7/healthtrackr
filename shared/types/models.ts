@@ -1,4 +1,4 @@
-import type { TimeRange } from '~~/server/tasks/fetchWhoopData'
+import type { TimeRange } from '~~/server/utils/whoop'
 
 export interface SleepScore {
   performance: number
@@ -73,6 +73,8 @@ export interface Recovery {
   isNormal: boolean
   calibrating: boolean
   id: number
+  score: number
+  date: string
 }
 
 export type DataRecord = { data: number, time: number }
